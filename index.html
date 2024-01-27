@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pass & Play Ludo</title>
+    <style>
+        /* Add your styles here */
+        #board {
+            display: flex;
+            flex-wrap: wrap;
+            width: 300px;
+            height: 300px;
+        }
+
+        .cell {
+            box-sizing: border-box;
+            width: 33.33%;
+            height: 33.33%;
+            border: 1px solid #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="board"></div>
+
+    <script>
+        const boardSize = 3; // 3x3 board for simplicity
+        const board = document.getElementById('board');
+        let currentPlayer = 1; // Starting with player 1
+
+        function createBoard() {
+            for (let i = 0; i < boardSize * boardSize; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.setAttribute('data-index', i);
+                board.appendChild(cell);
+            }
+        }
+
+        function rollDie() {
+            return Math.floor(Math.random() * 6) + 1;
+        }
+
+        function movePiece(player, steps) {
+            const currentIndex = getCurrentIndex(player);
+            const newIndex = currentIndex + steps;
+
+            // Check if the move is within the board
+            if (newIndex < boardSize * boardSize) {
+                setCurrentIndex(player, newIndex);
+                console.log(`Player ${player} moved ${steps} steps.`);
+            } else {
+                console.log(`Player ${player} cannot move ${steps} steps.`);
+            }
+        }
+
+        function getCurrentIndex(player) {
+            return parseInt(document.querySelector(`.cell[data-index="${player}"]`).dataset.index);
+        }
+
+        function setCurrentIndex(player, newIndex) {
+            document.querySelector(`.cell[data-index="${player}"]`).innerText = ''; // Clear previous position
+            document.querySelector(`.cell[data-index="${newIndex}"]`).innerText = player; // Mark new position
+        }
+
+        function playTurn() {
+            const steps = rollDie();
+            movePiece(currentPlayer, steps);
+            updateUI();
+            checkWinner();
+            currentPlayer = currentPlayer === 1 ? 2 : 1; // Switch to the next player
+        }
+
+        function updateUI() {
+            // Implement your UI update logic here
+        }
+
+        function checkWinner() {
+            // Implement your winning condition logic here
+        }
+
+        // Initialize the game board and start the game
+        createBoard();
+
+        // Players take turns rolling the die and moving their pieces
+        document.addEventListener('click', playTurn);
+    </script>
+</body>
+</html>
