@@ -11,6 +11,7 @@
     height: 400px;
     background-color: #FFD700;
     position: relative;
+    overflow: hidden; /* Ensures that the board doesn't expand beyond its container */
   }
   .tile {
     width: 100px;
@@ -53,10 +54,10 @@
   <div class="tile safe" id="tile6" style="top: 100px; left: 100px;"></div>
   <div class="tile safe" id="tile7" style="top: 200px; left: 100px;"></div>
   <div class="tile safe" id="tile8" style="top: 300px; left: 100px;"></div>
-  <div class="tile home" id="tile9"></div>
-  <div class="tile home" id="tile10" style="top: 100px;"></div>
-  <div class="tile home" id="tile11" style="top: 200px;"></div>
-  <div class="tile home" id="tile12" style="top: 300px;"></div>
+  <div class="tile home" id="tile9" style="left: 300px;"></div>
+  <div class="tile home" id="tile10" style="top: 100px; left: 300px;"></div>
+  <div class="tile home" id="tile11" style="top: 200px; left: 300px;"></div>
+  <div class="tile home" id="tile12" style="top: 300px; left: 300px;"></div>
   <div class="tile end" id="tile13" style="top: 100px;"></div>
   <div class="tile end" id="tile14" style="top: 200px;"></div>
   <div class="tile end" id="tile15" style="top: 300px;"></div>
@@ -139,8 +140,22 @@
   }
 
   function rollDice() {
-    let diceResult = Math.floor(Math.random() * 6) + 1;
-    document.getElementById("diceResult").innerText = "Dice result: " + diceResult;
+    let diceResult = 0;
+    let rolls = 10; // Number of rolls for the animation
+    let interval = 100; // Milliseconds between each roll
+    let diceResultDisplay = document.getElementById("diceResult");
+
+    // Start rolling animation
+    let rollInterval = setInterval(() => {
+      diceResult = Math.floor(Math.random() * 6) + 1;
+      diceResultDisplay.innerText = "Rolling... " + diceResult;
+      rolls--;
+      if (rolls === 0) {
+        clearInterval(rollInterval);
+        // Display final result after animation
+        diceResultDisplay.innerText = "Dice result: " + diceResult;
+      }
+    }, interval);
   }
 </script>
 </body>
